@@ -1,1 +1,50 @@
+services:
+  dmagent:
+    image: harbor.arfa.wise-paas.com/edge-coa/dmagent:v0.1.0-eb.2_20250926.2
+    container_name: dmagent
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    logging:
+      driver: journald  # For systemd-based systems
+      options:
+        tag: "dmagent"
+    environment:
+      - LOG_LEVEL=info
+      - LOG_FORMAT=json
+      - DEVICE_SN=master
+      - DEVICE_SS=advantech.edgesync
+    volumes:
+      # Map a local directory to store the database files
+      - /opt/Advantech/dmagent/data:/opt/Advantech/dmagent/data
+      - /opt/Advantech/dmagent/authinfo.json:/opt/Advantech/dmagent/authinfo.json:ro
+      - /etc/board:/etc/board
+      # For container mgmt
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /:/host
 
+  dataagent:
+    image: harbor.arfa.wise-paas.com/edge-coa/data_agent:v0.1.0-eb.2.20250806.1
+    network_mode: host
+    container_name: data_agent_service
+    privileged: true
+    environment:
+      DATA_AGENT_NATS_URL: "nats://127.0.0.1:4223"
+      DATA_AGENT_NATS_USERNAME: ""
+      DATA_AGENT_NATS_PASSWORD: ""
+    stdin_open: true
+    tty: true
+    volumes:
+      - /lib/libSUSI-4.00.so:/lib/libSUSI-4.00.so:ro
+      - /lib/libSUSI-4.00.so.1:/lib/libSUSI-4.00.so.1:ro
+      - /lib/libSUSI-4.00.so.1.0.0:/lib/libSUSI-4.00.so.1.0.0:ro
+      - /lib/libjansson.a:/lib/libjansson.a:ro
+      - /lib/libjansson.so:/lib/libjansson.so:ro
+      - /lib/libjansson.so.4:/lib/libjansson.so.4:ro
+      - /lib/libjansson.so.4.11.0:/lib/libjansson.so.4.11.0:ro
+      - /lib/libSusiIoT.so:/lib/libSusiIoT.so:ro
+      - /lib/libSusiIoT.so.1.0.0:/lib/libSusiIoT.so.1.0.0:ro
+      - /usr/lib/Advantech:/usr/lib/Advantech:ro
+      - /etc/board:/etc/board
+      - /opt/Advantech/dmdataagent/data:/dtdl_service_forder
