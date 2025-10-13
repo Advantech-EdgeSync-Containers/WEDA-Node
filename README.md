@@ -53,3 +53,66 @@ The Data Agent is responsible for data collection, gathering vital statistics ab
 - Provides early warning of resource constraints that could impact operations
 - Publishes collected data to the Device Management Agent for cloud visibility
 - Helps operations teams optimize resource allocation and predict maintenance needs
+
+## Deployment
+
+### Versions
+1. Device Management Agent (DM Agent)
+
+```
+harbor.arfa.wise-paas.com/edge-coa/dmagent:v0.1.0-eb.2_20250926.2
+```
+
+1. Data Agent 
+```
+harbor.arfa.wise-paas.com/edge-coa/data_agent:v0.1.0-eb.2.20250806.1
+```
+
+### Service Management SOPs
+
+Copy the `Docker Compose File` to device `/home/ubuntu/ops`, and run command
+```bash
+
+# Deploy WEDA device credential file to connect to WEDA Core Message Broker.
+# Note: Please download the WEDA device credential file from your WEDA Core API. If you experience any issue, please check <LINK> or 
+# contact <email>.
+# upload the credential file.
+$ scp ./authInfo.json <device_ssh_host>:/home/ubuntu/ops/authinfo.json 
+
+# ssh login device and copy the authinfo file to defined file path.
+$ ssh <user_name>:<device_ssh_host>
+
+# create docker-compose.yml at /home/ubuntu/ops
+$ cd /home/ubuntu/ops
+
+# copy and paste content `Device Management Agent  Docker Compose File` to /home/ubuntu/ops/docker-compose.yml.
+$ vi /home/ubuntu/ops/docker-compose.yml
+# copy the device credential file to targeted folder.
+$ sudo cp /home/ubuntu/ops/authinfo.json /opt/Advantech/dmagent/authinfo.json
+
+# run device agents with docker compose.
+$ docker compose up -d
+
+# check docker container service is running.
+$ docker compose ps
+# Expected to see the dmagent and data agent versions
+WARN[0000] /home/ubuntu/ops/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+NAME                 IMAGE                                                             COMMAND                  SERVICE     CREATED              STATUS              PORTS
+data_agent_service   harbor.arfa.wise-paas.com/edge-coa/data_agent:xxxx              "dotnet /abp_service…"   dataagent   14 minutes ago       Up 14 minutes
+dmagent              harbor.arfa.wise-paas.com/edge-coa/dmagent:xxxx   "/opt/Advantech/dmag…"   dmagent     About a minute ago   Up About a minute
+
+# stop service 
+$ docker compose stop
+
+# Stop and remove containers, networks
+$ docker compose down -v
+```
+
+## WEDA Node agents status checking
+```bash
+# confirm device service is running
+$ docker ps 
+CONTAINER ID   IMAGE                                                                                    COMMAND                  CREATED          STATUS              PORTS     NAMES
+a871873e848b   harbor.arfa.wise-paas.com/edge-coa/dmagent:v0.1.0-eb.1_20250702.1                        "/opt/Advantech/dmag…"   21 minutes ago   Up About a minute             dmagent
+838a9417a9b8   harbor.arfa.wise-paas.com/edge-coa/data_agent:0.1.0.1752144660000                        "dotnet /abp_service…"   21 minutes ago   Up About a minute             data_agent_service
+```
