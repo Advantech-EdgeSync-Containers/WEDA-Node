@@ -1,6 +1,9 @@
 # WEDA-Node
 This container includes WEDA Node for edge devices to be integrated with WEDA API, which offers edge-cloud orchestration to enable AIoT network deployment.
 
+[[_TOC_]]
+
+
 # Introduction
 
 ## What is WEDA Node?
@@ -29,7 +32,6 @@ WEDA Node delivers immediate business value by:
 2. **Container Orchestration**: Deploy and manage containerized applications on edge devices without manual intervention
 3. **Real-time Monitoring**: Continuous tracking of system resources (CPU, memory, storage) and device health metrics
 4. **Bi-directional Synchronization**: Seamless sync between desired cloud configurations and actual device states through digital twin protocol
-5. **Sub-Device Integration**: Connect and manage industrial sensors, actuators, and third-party devices through the edge gateway
 
 ## Core Components
 
@@ -54,53 +56,58 @@ The Data Agent is responsible for data collection, gathering vital statistics ab
 - Publishes collected data to the Device Management Agent for cloud visibility
 - Helps operations teams optimize resource allocation and predict maintenance needs
 
-## Deployment
+# Deployment
 
-### Versions
-1. Device Management Agent (DM Agent)
+## Versions
+ * Device Management Agent (DM Agent)
 
-```
+```bash
 harbor.arfa.wise-paas.com/edge-coa/dmagent:v0.1.0-eb.2_20250926.2
 ```
 
-1. Data Agent 
-```
+* Data Agent 
+```bash
 harbor.arfa.wise-paas.com/edge-coa/data_agent:v0.1.0-eb.2.20250806.1
 ```
 
-### Service Management SOPs
+## WEDA Node Deployment SOP
 
-Copy the `Docker Compose File` to device `/home/ubuntu/ops`, and run command
+1. Downloade WEDA Node credential file from the WEDA Core. 
+    **Please download the WEDA node credential file (authInfo.json) from your WEDA Core API.** If you experience any issue here, please check <LINK> or contact <email>.
+
+2. Uploade the WEDA Node credential file to the edge device.
 ```bash
+ $ scp ./authInfo.json <device_ssh_host>:/home/ubuntu/ops/authinfo.json 
+ ```
+3. SSH login the edge device
+```bash
+ $ ssh <device_ssh_host>
+ $ sudo cp /home/ubuntu/ops/authinfo.json /opt/Advantech/dmagent/authinfo.json
+```
+4. Deploy and run `docker-compose` file for WEDA Node
 
-# Deploy WEDA device credential file to connect to WEDA Core Message Broker.
-# Note: Please download the WEDA device credential file from your WEDA Core API. If you experience any issue, please check <LINK> or 
-# contact <email>.
-# upload the credential file.
-$ scp ./authInfo.json <device_ssh_host>:/home/ubuntu/ops/authinfo.json 
+   ***!!!Please make sure you already upload the WEDA node credential file to device before following steps!!!***
 
-# ssh login device and copy the authinfo file to defined file path.
-$ ssh <user_name>:<device_ssh_host>
-
-# create docker-compose.yml at /home/ubuntu/ops
-$ cd /home/ubuntu/ops
-
-# copy and paste content `Device Management Agent  Docker Compose File` to /home/ubuntu/ops/docker-compose.yml.
+```bash
+# copy and paste content `WEDA Node Docker Compose File` to /home/ubuntu/ops/docker-compose.yml.
 $ vi /home/ubuntu/ops/docker-compose.yml
-# copy the device credential file to targeted folder.
-$ sudo cp /home/ubuntu/ops/authinfo.json /opt/Advantech/dmagent/authinfo.json
 
 # run device agents with docker compose.
 $ docker compose up -d
+```
 
-# check docker container service is running.
+5. Check WEDA Node running status
+```bash
 $ docker compose ps
 # Expected to see the dmagent and data agent versions
 WARN[0000] /home/ubuntu/ops/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
 NAME                 IMAGE                                                             COMMAND                  SERVICE     CREATED              STATUS              PORTS
 data_agent_service   harbor.arfa.wise-paas.com/edge-coa/data_agent:xxxx              "dotnet /abp_service…"   dataagent   14 minutes ago       Up 14 minutes
 dmagent              harbor.arfa.wise-paas.com/edge-coa/dmagent:xxxx   "/opt/Advantech/dmag…"   dmagent     About a minute ago   Up About a minute
+```
 
+6. Stop WEDA Node
+```bash
 # stop service 
 $ docker compose stop
 
@@ -108,11 +115,3 @@ $ docker compose stop
 $ docker compose down -v
 ```
 
-## WEDA Node agents status checking
-```bash
-# confirm device service is running
-$ docker ps 
-CONTAINER ID   IMAGE                                                                                    COMMAND                  CREATED          STATUS              PORTS     NAMES
-a871873e848b   harbor.arfa.wise-paas.com/edge-coa/dmagent:v0.1.0-eb.1_20250702.1                        "/opt/Advantech/dmag…"   21 minutes ago   Up About a minute             dmagent
-838a9417a9b8   harbor.arfa.wise-paas.com/edge-coa/data_agent:0.1.0.1752144660000                        "dotnet /abp_service…"   21 minutes ago   Up About a minute             data_agent_service
-```
