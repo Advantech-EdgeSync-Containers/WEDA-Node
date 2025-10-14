@@ -72,7 +72,7 @@ harbor.arfa.wise-paas.com/edge-coa/data_agent:v0.1.0-eb.2.20250806.1
 
 ## WEDA Node Deployment SOP
 
-1. Downloade WEDA Node credential file from the WEDA Core. 
+1. Registers your device to WEDA Core and downloads WEDA Node credential file from the WEDA Core. 
     **Please download the WEDA node credential file (authInfo.json) from your WEDA Core API.** If you experience any issue here, please check <LINK> or contact <email>.
 
 2. Uploade the WEDA Node credential file to the edge device.
