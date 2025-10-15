@@ -10,16 +10,16 @@ This container includes WEDA Node for edge devices to be integrated with WEDA AP
 
 WEDA Node is an edge software agent that runs on Advantech industrial devices, enabling seamless remote management and monitoring of edge infrastructure. It serves as the intelligent bridge between your edge devices and WEDA Core, providing real-time visibility and control over your distributed IoT deployments.
 
+
+
+<img width="4444" height="3380" alt="WEDA_arch_plot" src="https://github.com/user-attachments/assets/b6f08a06-e4d3-4785-ab7c-fc8261541cfe" />
+
 WEDA Node leverages a digital twin framework to maintain synchronized state between the back-office system and remote edge devices. The framework manages two key states:
 
 - **Desired State**: The target configuration defined by users in the back-office cloud
 - **Reported State**: The actual current state of the edge device
 
 This bi-directional synchronization ensures that any configuration changes made in the back-office are reliably propagated to edge devices, while the actual device status is continuously reflected back to the cloud for monitoring and validation.
-
-
-<img width="4444" height="3380" alt="WEDA_arch_plot" src="https://github.com/user-attachments/assets/b6f08a06-e4d3-4785-ab7c-fc8261541cfe" />
-
 
 
 ## Business Value
