@@ -74,7 +74,7 @@ The Data Agent is responsible for data collection, gathering vital statistics ab
 | **Operational Optimization** | Helps operations teams optimize resource allocation and predict maintenance needs. |
 
 
-# Deployment
+# WEDA Node Quick Start
 
 ## Versions
  * Device Management Agent (DM Agent)
@@ -88,6 +88,11 @@ harbor.arfa.wise-paas.com/edge-coa/dmagent:v0.1.0-eb.2_20250926.2
 harbor.arfa.wise-paas.com/edge-coa/data_agent:v0.1.0-eb.2.20250806.1
 ```
 
+## Reference:
+1. [WEDA Node Github Repository Page](https://github.com/Advantech-EdgeSync-Containers/WEDA-Node/blob/main/README.md)
+
+2. [WEDA Node Docker-compse.yml](https://github.com/Advantech-EdgeSync-Containers/WEDA-Node/blob/main/docker-compose.yml)
+   
 ## WEDA Node Deployment SOP
 
 1. Registers your device to WEDA Core and downloads WEDA Node credential file from the WEDA Core. 
