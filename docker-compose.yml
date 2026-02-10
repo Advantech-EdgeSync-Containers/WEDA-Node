@@ -48,3 +48,4 @@ services:
       - /usr/lib/Advantech:/usr/lib/Advantech:ro
       - /etc/board:/etc/board
       - /opt/Advantech/dmdataagent/data:/dtdl_service_forder
+    command: dotnet DataAgent.Web.dll
