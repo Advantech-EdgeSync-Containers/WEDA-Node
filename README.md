@@ -89,9 +89,9 @@ harbor.arfa.wise-paas.com/edge-coa/data_agent:v0.1.0-eb.2.20250806.1
 ```
 
 ## Reference:
-1. [WEDA Node Github Repository Page](https://github.com/Advantech-EdgeSync-Containers/WEDA-Node/blob/main/README.md)
+1. [WEDA Node Github Repository Page](https://github.com/Advantech-Containers/WEDA-Node/blob/main/README.md)
 
-2. [WEDA Node Docker-compse.yml](https://github.com/Advantech-EdgeSync-Containers/WEDA-Node/blob/main/docker-compose.yml)
+2. [WEDA Node Docker-compse.yml](https://github.com/Advantech-Containers/WEDA-Node/blob/main/docker-compose.yml)
    
 ## WEDA Node Deployment SOP
 
